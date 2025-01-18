@@ -159,6 +159,11 @@ jobs:
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
+    - name: Compress recovery.img to ZIP
+      run: |
+        zip -j workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/recovery_${{ github.event.inputs.DEVICE_NAME }}.zip \
+            workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/recovery.img
+
     - name: Upload to Release
       uses: softprops/action-gh-release@v2
       with:
